@@ -193,3 +193,25 @@ btnClose.addEventListener('click', function(e){
 
   inputCloseUsername.value = inputClosePin.value = ""
 });
+
+let sorted = false;
+btnSort.addEventListener('click', e => {
+  e.preventDefault(); // prevent form submit
+
+  const combineMovDates = currentAccount.movements.map((mov, idx) => ({
+    movement: mov,
+    date: currentAccount.movementsDates[idx],
+  }));
+
+  if (sorted) {
+    combineMovDates.sort((a, b) => new Date(b.date) - new Date(a.date)); // descending
+  } else {
+    combineMovDates.sort((a, b) => new Date(a.date) - new Date(b.date)); // ascending
+  }
+
+  currentAccount.movements = combineMovDates.map(e => e.movement);
+  currentAccount.movementsDates = combineMovDates.map(e => e.date);
+
+  displayMovements(currentAccount);
+  sorted = !sorted;
+});
